@@ -12,6 +12,7 @@ public class PictureActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_picture);
+        setTitle("FlickrBrowserAndroid");
         String farm = this.getIntent().getStringExtra("farm");
         String server = this.getIntent().getStringExtra("server");
         String id = this.getIntent().getStringExtra("id");
