@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        GitHubService service = retrofit.create(GitHubService.class);
+        FlickrService service = retrofit.create(FlickrService.class);
 
         service.getPictures()
                 .subscribeOn(Schedulers.io())
@@ -51,38 +51,32 @@ public class MainActivity extends AppCompatActivity {
                             mAdapter = new PictureAdapter(FlickrAnswer.photos.photo);
                             recyclerView.setAdapter(mAdapter);
                         },
-                        throwable -> Log.e("TAG", "Error while fetching new version", throwable));
+                        throwable -> Log.e("TAG", "Error", throwable));
     }
 
-    public interface GitHubService {
-        @GET("?method=flickr.interestingness.getList&api_key=0c731f4470260b5ff4ccc3d519d07697&format=json&nojsoncallback=1")
+    public interface FlickrService {
+        @GET("?method=flickr.interestingness.getList&api_key=0c731f4470260b5ff4ccc3d519d07697&format=json&nojsoncallback=1&per_page=500")
         Observable<FlickrAnswer> getPictures();
     }
 
     public class PictureAdapter extends RecyclerView.Adapter<PictureAdapter.ViewHolder> {
         private FlickrAnswer.FlickrPic[] mPictures;
 
-        // Provide a suitable constructor (depends on the kind of dataset)
         public PictureAdapter(FlickrAnswer.FlickrPic[] pictures) {
             mPictures = pictures;
         }
 
-        // Create new views (invoked by the layout manager)
         @Override
         public PictureAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
                                                             int viewType) {
-            // create a new view
             View v = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.element_picture, parent, false);
             ViewHolder vh = new ViewHolder(v);
             return vh;
         }
 
-        // Replace the contents of a view (invoked by the layout manager)
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
-            // - get element from your dataset at this position
-            // - replace the contents of the view with that element
             holder.mTextView.setText(mPictures[position].title);
 
             Picasso.with(MainActivity.this).load("https://farm"
@@ -92,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
                     +  "/"
                     + mPictures[position].id
                     + "_" + mPictures[position].secret
-                    + "_m.jpg")
+                    + "_q.jpg")
                     .into(holder.mImageView);
 
             holder.itemView.setOnClickListener(view -> {
@@ -105,17 +99,12 @@ public class MainActivity extends AppCompatActivity {
             });
         }
 
-        // Return the size of your dataset (invoked by the layout manager)
         @Override
         public int getItemCount() {
             return mPictures.length;
         }
 
-        // Provide a reference to the views for each data item
-        // Complex data items may need more than one view per item, and
-        // you provide access to all the views for a data item in a view holder
         class ViewHolder extends RecyclerView.ViewHolder {
-            // each data item is just a string in this case
             ImageView mImageView;
             TextView mTextView;
             ViewHolder(View v) {

@@ -6,15 +6,16 @@
 
     <ImageView
         android:id="@+id/image_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_width="150dp"
+        android:layout_height="150dp">
     </ImageView>
 
     <TextView
         android:id="@+id/text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/image_view">
+        android:layout_toRightOf="@id/image_view"
+        android:layout_centerVertical="true">
     </TextView>
 
 </RelativeLayout>
